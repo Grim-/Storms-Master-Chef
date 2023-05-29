@@ -33,7 +33,7 @@ namespace OutwardModTemplate
 
             if (theItem != null && theItem is RecipeItem recipeItem)
             {
-                if (!_affectedCharacter.Inventory.RecipeKnowledge.IsRecipeLearned(recipeItem.UID)))
+                if (!_affectedCharacter.Inventory.RecipeKnowledge.IsRecipeLearned(recipeItem.UID))
                 {
                     _affectedCharacter.Inventory.RecipeKnowledge.LearnRecipe(recipeItem.Recipe);
                 }
