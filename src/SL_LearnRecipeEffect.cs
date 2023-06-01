@@ -1,5 +1,6 @@
 ﻿using SideLoader;
 using System;
+using System.Diagnostics;
 
 namespace OutwardModTemplate
 {
@@ -8,39 +9,57 @@ namespace OutwardModTemplate
         public Type SLTemplateModel => typeof(SL_LearnRecipeEffect);
         public Type GameModel => typeof(LearnRecipeEffect);
 
-        public int RecipeID;
+        public string RecipeUID;
 
         public override void ApplyToComponent<T>(T component)
         {
             SL_LearnRecipeEffect learnRecipeEffect = component as SL_LearnRecipeEffect;
-            learnRecipeEffect.RecipeID = RecipeID;
+            learnRecipeEffect.RecipeUID = RecipeUID;
         }
 
         public override void SerializeEffect<T>(T effect)
         {
             SL_LearnRecipeEffect learnRecipeEffect = effect as SL_LearnRecipeEffect;
-            this.RecipeID = learnRecipeEffect.RecipeID;
+            this.RecipeUID = learnRecipeEffect.RecipeUID;
         }
     }
 
     public class LearnRecipeEffect : Effect
     {
-        public int RecipeID;
+        public string RecipeUID;
 
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
-            Item theItem = ResourcesPrefabManager.Instance.GetItemPrefab(RecipeID);
-
-            if (theItem != null && theItem is RecipeItem recipeItem)
+            if (!_affectedCharacter.Inventory.RecipeKnowledge.IsRecipeLearned(RecipeUID))
             {
-                if (!_affectedCharacter.Inventory.RecipeKnowledge.IsRecipeLearned(recipeItem.UID))
-                {
-                    _affectedCharacter.Inventory.RecipeKnowledge.LearnRecipe(recipeItem.Recipe);
-                }
+                Recipe FoundRecipe = TryFindRecipe(RecipeUID);
 
+                if (FoundRecipe != null)
+                {
+                    _affectedCharacter.Inventory.RecipeKnowledge.LearnRecipe(FoundRecipe);
+                }
+                else
+                {
+                    StormCancer_MasterChef.Log.LogMessage($"LearnRecipeEffect :: Cannot find Recipe with UID {RecipeUID}");
+                }  
+            }
+        }
+
+
+        private Recipe TryFindRecipe(string RecipeUID)
+        {
+            foreach (var item in RecipeManager.Instance.m_recipes)
+            {
+                if (item.Value.UID == RecipeUID)
+                {
+                    return item.Value;
+                }
             }
 
+            return null;
         }
     }
+
+
 
 }
