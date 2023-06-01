@@ -12,13 +12,13 @@ namespace OutwardModTemplate
 
         public override void ApplyToComponent<T>(T component)
         {
-            SL_UnLearnRecipeEffect learnRecipeEffect = component as SL_UnLearnRecipeEffect;
+            UnLearnRecipeEffect learnRecipeEffect = component as UnLearnRecipeEffect;
             learnRecipeEffect.RecipeUID = RecipeUID;
         }
 
         public override void SerializeEffect<T>(T effect)
         {
-            SL_UnLearnRecipeEffect learnRecipeEffect = effect as SL_UnLearnRecipeEffect;
+            UnLearnRecipeEffect learnRecipeEffect = effect as UnLearnRecipeEffect;
             this.RecipeUID = learnRecipeEffect.RecipeUID;
         }
     }

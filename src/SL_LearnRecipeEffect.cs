@@ -13,20 +13,24 @@ namespace OutwardModTemplate
 
         public override void ApplyToComponent<T>(T component)
         {
-            SL_LearnRecipeEffect learnRecipeEffect = component as SL_LearnRecipeEffect;
+            LearnRecipeEffect learnRecipeEffect = component as LearnRecipeEffect;
             learnRecipeEffect.RecipeUID = RecipeUID;
         }
 
         public override void SerializeEffect<T>(T effect)
         {
-            SL_LearnRecipeEffect learnRecipeEffect = effect as SL_LearnRecipeEffect;
+            LearnRecipeEffect learnRecipeEffect = effect as LearnRecipeEffect;
             this.RecipeUID = learnRecipeEffect.RecipeUID;
         }
     }
 
-    public class LearnRecipeEffect : Effect
+    public class LearnRecipeEffect : Effect, ICustomModel
     {
         public string RecipeUID;
+
+        public Type SLTemplateModel => typeof(SL_LearnRecipeEffect);
+
+        public Type GameModel => typeof(LearnRecipeEffect);
 
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
