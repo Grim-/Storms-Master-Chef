@@ -6,7 +6,7 @@ namespace OutwardModTemplate
     public class SL_HasRecipeCondition : SL_EffectCondition, ICustomModel
     {
         public Type SLTemplateModel => typeof(SL_HasRecipeCondition);
-        public Type GameModel => typeof(LearnRecipeEffect);
+        public Type GameModel => typeof(LearnCustomRecipeEffect);
 
         public string RecipeUID;
 

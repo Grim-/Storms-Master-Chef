@@ -1,37 +1,30 @@
 ﻿using SideLoader;
 using System;
-using System.Diagnostics;
 
-namespace OutwardModTemplate
-{
+
     public class SL_LearnRecipeEffect : SL_Effect, ICustomModel
     {
         public Type SLTemplateModel => typeof(SL_LearnRecipeEffect);
-        public Type GameModel => typeof(LearnRecipeEffect);
+        public Type GameModel => typeof(LearnCustomRecipeEffect);
 
         public string RecipeUID;
 
         public override void ApplyToComponent<T>(T component)
         {
-            LearnRecipeEffect learnRecipeEffect = component as LearnRecipeEffect;
+            LearnCustomRecipeEffect learnRecipeEffect = component as LearnCustomRecipeEffect;
             learnRecipeEffect.RecipeUID = RecipeUID;
         }
 
         public override void SerializeEffect<T>(T effect)
         {
-            LearnRecipeEffect learnRecipeEffect = effect as LearnRecipeEffect;
+            LearnCustomRecipeEffect learnRecipeEffect = effect as LearnCustomRecipeEffect;
             this.RecipeUID = learnRecipeEffect.RecipeUID;
         }
     }
 
-    public class LearnRecipeEffect : Effect, ICustomModel
+    public class LearnCustomRecipeEffect : Effect
     {
         public string RecipeUID;
-
-        public Type SLTemplateModel => typeof(SL_LearnRecipeEffect);
-
-        public Type GameModel => typeof(LearnRecipeEffect);
-
         public override void ActivateLocally(Character _affectedCharacter, object[] _infos)
         {
             if (!_affectedCharacter.Inventory.RecipeKnowledge.IsRecipeLearned(RecipeUID))
@@ -44,7 +37,7 @@ namespace OutwardModTemplate
                 }
                 else
                 {
-                    StormCancer_MasterChef.Log.LogMessage($"LearnRecipeEffect :: Cannot find Recipe with UID {RecipeUID}");
+                    OutwardModTemplate.StormCancer_MasterChef.Log.LogMessage($"LearnRecipeEffect :: Cannot find Recipe with UID {RecipeUID}");
                 }  
             }
         }
@@ -64,6 +57,3 @@ namespace OutwardModTemplate
         }
     }
 
-
-
-}
